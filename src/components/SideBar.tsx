@@ -12,6 +12,14 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function SideBar({ className, domains }: SidebarProps) {
+  const cleanDomains = domains.map((domain) => {
+    const words = domain.replace(/-/g, ' ').split(' ')
+    const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    const cleanedDomain = capitalizedWords.join(' ')
+
+    return cleanedDomain
+  })
+
   const pathname = usePathname()
 
   function getButtonVariant(path: string) {
@@ -19,7 +27,7 @@ export default function SideBar({ className, domains }: SidebarProps) {
   }
 
   return (
-    <div className={cn('pb-4 w-52 bg-zinc-950', className)}>
+    <div className={cn('pb-4 w-52 bg-black', className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Discover</h2>
@@ -73,14 +81,17 @@ export default function SideBar({ className, domains }: SidebarProps) {
           <h2 className="relative px-7 text-lg font-semibold tracking-tight">domains</h2>
           <ScrollArea className="h-[300px] px-1">
             <div className="space-y-1 p-2">
-              {domains?.map((playlist, i) => (
+              {domains?.map((domain, i) => (
                 <Button
-                  key={`${playlist}-${i}`}
-                  variant="ghost"
+                  asChild
+                  key={`${domain}-${i}`}
+                  variant={getButtonVariant(`/domains/${domain}`)}
                   className="w-full justify-start font-normal"
                 >
-                  <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
-                  {playlist}
+                  <Link href={`/domains/${domain}`}>
+                    <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+                    {cleanDomains[i]}
+                  </Link>
                 </Button>
               ))}
             </div>
