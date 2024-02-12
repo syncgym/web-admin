@@ -14,9 +14,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { MuscleGroupForm } from './form'
 
-export default async function Domain() {
+export default async function MuscleGrorpDomain() {
   const res = await reqApi.get('/api/v1/muscle-group')
-  const { data }: { data: string[] } = res.data
+  const { data }: { data: string[] } = await res.data
 
   const formattedData = data.map((item) => ({ name: item })) satisfies MuscleGroup[]
 
@@ -42,7 +42,9 @@ export default async function Domain() {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Confirm</Button>
+              <DialogClose asChild>
+                <Button type="submit">Confirm</Button>
+              </DialogClose>
             </DialogFooter>
           </MuscleGroupForm>
         </DialogContent>

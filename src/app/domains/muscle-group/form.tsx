@@ -1,5 +1,6 @@
 'use client'
 
+import { reqApi } from '@/config/axios'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
@@ -19,18 +20,20 @@ export function MuscleGroupForm({ children }: { children: React.ReactNode }) {
         variant: 'destructive',
       })
 
-    await fetch('/api/v1/muscle-group', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: form }),
-    })
+    try {
+      await reqApi.post('/api/v1/muscle-group', { name: form })
 
-    toast({
-      title: 'Muscle Group created',
-      description: 'The muscle group was created successfully',
-    })
+      toast({
+        title: 'Muscle Group created',
+        description: 'The muscle group was created successfully',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message,
+        variant: 'destructive',
+      })
+    }
   }
 
   return (
