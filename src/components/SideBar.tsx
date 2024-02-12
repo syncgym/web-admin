@@ -3,8 +3,8 @@
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { ScrollArea } from './ui/scroll-area'
-import { GalleryHorizontalEnd } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { ActivityLogIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,19 +34,19 @@ export default function SideBar({ className, domains }: SidebarProps) {
           <div className="space-y-1">
             <Button asChild variant={getButtonVariant('/')} className="w-full justify-start">
               <Link href={'/'}>
-                <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+                <ActivityLogIcon className="h-4 w-4 mr-2" />
                 Asd
               </Link>
             </Button>
             <Button asChild variant={getButtonVariant('/1')} className="w-full justify-start">
               <Link href={'/1'}>
-                <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+                <ActivityLogIcon className="h-4 w-4 mr-2" />
                 Asd
               </Link>
             </Button>
             <Button asChild variant={getButtonVariant('/2')} className="w-full justify-start">
               <Link href={'/2'}>
-                <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+                <ActivityLogIcon className="h-4 w-4 mr-2" />
                 Asd
               </Link>
             </Button>
@@ -56,23 +56,23 @@ export default function SideBar({ className, domains }: SidebarProps) {
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Library</h2>
           <div className="space-y-1">
             <Button variant="ghost" className="w-full justify-start">
-              <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+              <ActivityLogIcon className="h-4 w-4 mr-2" />
               domains
             </Button>
             <Button variant="ghost" className="w-full justify-start">
-              <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+              <ActivityLogIcon className="h-4 w-4 mr-2" />
               Songs
             </Button>
             <Button variant="ghost" className="w-full justify-start">
-              <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+              <ActivityLogIcon className="h-4 w-4 mr-2" />
               Made for You
             </Button>
             <Button variant="ghost" className="w-full justify-start">
-              <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+              <ActivityLogIcon className="h-4 w-4 mr-2" />
               Artists
             </Button>
             <Button variant="ghost" className="w-full justify-start">
-              <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+              <ActivityLogIcon className="h-4 w-4 mr-2" />
               Albums
             </Button>
           </div>
@@ -89,7 +89,7 @@ export default function SideBar({ className, domains }: SidebarProps) {
                   className="w-full justify-start font-normal"
                 >
                   <Link href={`/domains/${domain}`}>
-                    <GalleryHorizontalEnd className="h-4 w-4 mr-2" />
+                    <ActivityLogIcon className="h-4 w-4 mr-2" />
                     {cleanDomains[i]}
                   </Link>
                 </Button>
