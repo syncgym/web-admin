@@ -1,16 +1,46 @@
 'use client'
 
-import { reqApi } from '@/config/axios'
+import { links } from '@/config/links'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
+import { action } from '@/config/actions'
 
-export function MuscleGroupForm({ children }: { children: React.ReactNode }) {
-  const { toast } = useToast()
+interface FormProps {
+  children: React.ReactNode
+}
+
+interface PostFormProps extends FormProps {
+  method: 'POST'
+}
+
+interface PutFormProps extends FormProps {
+  method: 'PUT'
+  name: string
+}
+
+const urls = (name: string | undefined) => ({
+  POST: `${links.api}/api/v1/muscle-group`,
+  PUT: `${links.api}/api/v1/muscle-group/${name}`,
+})
+
+const messages = {
+  POST: {
+    title: 'Muscle Group created',
+    description: 'The muscle group was created successfully',
+  },
+  PUT: {
+    title: 'Muscle Group updated',
+    description: 'The muscle group was updated successfully',
+  },
+}
+
+export function MuscleGroupForm<T extends PostFormProps | PutFormProps>(props: T) {
   const [form, setForm] = useState('')
+  const { toast } = useToast()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     if (!form)
@@ -20,17 +50,32 @@ export function MuscleGroupForm({ children }: { children: React.ReactNode }) {
         variant: 'destructive',
       })
 
+    const name = 'name' in props ? props.name : undefined
+
     try {
-      await reqApi.post('/api/v1/muscle-group', { name: form })
+      const res = await fetch(urls(name)[props.method], {
+        method: props.method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: form }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) throw data
+
+      action('muscle-group')
 
       toast({
-        title: 'Muscle Group created',
-        description: 'The muscle group was created successfully',
+        title: messages[props.method].title,
+        description: messages[props.method].description,
       })
     } catch (error: any) {
+      console.error(error)
+
       toast({
         title: 'Error',
-        description: error?.response?.data?.message,
+        description: error?.message,
         variant: 'destructive',
       })
     }
@@ -46,12 +91,12 @@ export function MuscleGroupForm({ children }: { children: React.ReactNode }) {
           <Input
             placeholder="ex: Dorsal"
             id="name"
-            onChange={(e) => setForm(e.target.value)}
-            value={form}
             className="col-span-3"
+            value={form}
+            onChange={(e) => setForm(e.target.value)}
           />
         </div>
-        {children}
+        {props.children}
       </form>
     </>
   )

@@ -1,4 +1,4 @@
-import { reqApi } from '@/config/axios'
+import { links } from '@/config/links'
 import { MuscleGroup, columns } from './columns'
 import { DataTable } from '@/components/data-table/data-table'
 import {
@@ -15,8 +15,13 @@ import { Button } from '@/components/ui/button'
 import { MuscleGroupForm } from './form'
 
 export default async function MuscleGrorpDomain() {
-  const res = await reqApi.get('/api/v1/muscle-group')
-  const { data }: { data: string[] } = await res.data
+  const res = await fetch(`${links.api}/api/v1/muscle-group`, {
+    cache: 'no-cache',
+    next: {
+      tags: ['muscle-group'],
+    },
+  })
+  const { data }: { data: string[] } = await res.json()
 
   const formattedData = data.map((item) => ({ name: item })) satisfies MuscleGroup[]
 
@@ -35,7 +40,7 @@ export default async function MuscleGrorpDomain() {
               Please enter the name of the muscle group you want to create.
             </DialogDescription>
           </DialogHeader>
-          <MuscleGroupForm>
+          <MuscleGroupForm method="POST">
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="outline">

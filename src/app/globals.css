@@ -9,4 +9,20 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-foreground rounded-xl;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-secondary;
+  }
+
+  ::selection {
+    @apply bg-secondary text-black;
+  }
 }
